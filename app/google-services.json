@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "113643860619",
+    "project_id": "pathmaster-327b2",
+    "storage_bucket": "pathmaster-327b2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113643860619:android:5caa32c3545a535a83da8e",
+        "android_client_info": {
+          "package_name": "com.example.pathmaster"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2JxLyRr1oyxlxz-lFO90fHNwhT7HcPWc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113643860619:android:16004898018f3a8c83da8e",
+        "android_client_info": {
+          "package_name": "com.example.pathmasterproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2JxLyRr1oyxlxz-lFO90fHNwhT7HcPWc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
