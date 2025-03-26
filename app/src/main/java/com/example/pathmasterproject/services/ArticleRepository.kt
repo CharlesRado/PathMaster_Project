@@ -1,0 +1,18 @@
+package com.example.pathmasterproject.services
+
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
+
+class ArticleRepository {
+    private val firestore = FirebaseFirestore.getInstance()
+    private val articlesCollection = firestore.collection("articles")
+
+    suspend fun getArticles(category: String): List<Article> {
+        return try {
+            val snapshot = articlesCollection.whereEqualTo("category", category).get().await()
+            snapshot.documents.mapNotNull { it.toObject(Article::class.java) }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+}

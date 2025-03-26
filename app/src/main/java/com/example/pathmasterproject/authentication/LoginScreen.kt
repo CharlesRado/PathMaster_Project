@@ -2,6 +2,7 @@ package com.example.pathmasterproject.authentication
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -106,10 +107,18 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
 
         // button to log-in into the application
         Button(onClick = {
+            if (email.isBlank() || password.isBlank()) {
+                message = "Veuillez remplir tous les champs"
+                return@Button
+            }
+
             authViewModel.signInWithEmail(email, password, { userData ->
                 Toast.makeText(context, "Welcome ${userData?.get("username")}!", Toast.LENGTH_SHORT).show()
-                navController.navigate(Screen.Home.route)
+                navController.navigate(Screen.Home.route){
+                    popUpTo(Screen.Login.route) { inclusive = true }
+                }
             }, { errorMessage ->
+                Log.e("LoginError", errorMessage)
                 message = errorMessage
             })
         }) {

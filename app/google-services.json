@@ -12,7 +12,20 @@
           "package_name": "com.example.pathmaster"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "113643860619-4e4cf7kbsk706rlciinfdhca2bdn51al.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pathmaster",
+            "certificate_hash": "47aeaf0c16e8736ccc87327687e659ac4a9ed2c7"
+          }
+        },
+        {
+          "client_id": "113643860619-ik9bei4ii4c1dc59fqrbn5849rcl0kv9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC2JxLyRr1oyxlxz-lFO90fHNwhT7HcPWc"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "113643860619-ik9bei4ii4c1dc59fqrbn5849rcl0kv9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     },
@@ -31,7 +49,20 @@
           "package_name": "com.example.pathmasterproject"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "113643860619-1uqn40c1lse5plgm1pfgcpmodm21rqsd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pathmasterproject",
+            "certificate_hash": "47aeaf0c16e8736ccc87327687e659ac4a9ed2c7"
+          }
+        },
+        {
+          "client_id": "113643860619-ik9bei4ii4c1dc59fqrbn5849rcl0kv9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC2JxLyRr1oyxlxz-lFO90fHNwhT7HcPWc"
@@ -39,7 +70,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "113643860619-ik9bei4ii4c1dc59fqrbn5849rcl0kv9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

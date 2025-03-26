@@ -22,9 +22,9 @@ fun BottomNavigationBar(navController: NavController) {
     val currentRoute = navBackStackEntry?.destination?.route
 
     NavigationBar(
-        containerColor = Color(0xFF753636),
+        containerColor = Color(0xFF7889CF),
         tonalElevation = 4.dp,
-        modifier = Modifier.height(50.dp)
+        modifier = Modifier.height(55.dp)
     ) {
         items.forEach { screen ->
             val selected = screen.route == currentRoute
@@ -40,7 +40,7 @@ fun BottomNavigationBar(navController: NavController) {
                             Image(
                                 painter = painterResource(id = it),
                                 contentDescription = screen.route,
-                                modifier = Modifier.size(if (selected) 44.dp else 40.dp)
+                                modifier = Modifier.size(if (selected) 48.dp else 46.dp)
                             )
                         }
                     }
@@ -52,7 +52,12 @@ fun BottomNavigationBar(navController: NavController) {
                         launchSingleTop = true
                     }
                 },
-                alwaysShowLabel = false
+                alwaysShowLabel = false,
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = Color.White,
+                    unselectedIconColor = Color(0xFFE0E0E0),
+                    indicatorColor = Color(0xFF25356C)
+                )
             )
         }
     }
