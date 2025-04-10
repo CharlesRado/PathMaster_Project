@@ -13,6 +13,7 @@ import com.example.pathmasterproject.screens.HomeScreen
 import com.example.pathmasterproject.authentication.LoginScreen
 import com.example.pathmasterproject.authentication.RegisterScreen
 import com.example.pathmasterproject.screens.LinksScreen
+import com.example.pathmasterproject.screens.ProfileScreen
 import com.example.pathmasterproject.screens.WelcomeScreen
 import com.example.pathmasterproject.services.ArticleViewModel
 import com.example.pathmasterproject.services.AuthViewModel
@@ -42,5 +43,6 @@ fun AppNavigation(
         composable(Screen.Login.route) { LoginScreen(navController, authViewModel)}
         composable(Screen.Register.route) { RegisterScreen(navController, authViewModel) }
         composable(Screen.Links.route) { LinksScreen(navController, articleViewModel) }
+        composable(Screen.Profile.route) { ProfileScreen(navController, authViewModel) }
     }
 }

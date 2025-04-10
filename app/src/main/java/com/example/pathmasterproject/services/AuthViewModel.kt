@@ -20,11 +20,20 @@ import com.google.android.gms.common.api.ApiException
 import kotlinx.coroutines.launch
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.example.pathmasterproject.navigation.Screen
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private lateinit var googleSignInClient: GoogleSignInClient
+    private val _profilePicture = MutableStateFlow<String?>(null)
+
+    val currentUsername = MutableStateFlow<String?>(null)
+    val currentRole = MutableStateFlow<String?>(null)
+    val currentEmail = MutableStateFlow<String?>(null)
+    val loginTimeInSeconds = MutableStateFlow<Long?>(null)
+    val profilePicture: StateFlow<String?> get() = _profilePicture
 
     init {
         configureGoogleSignIn(application.applicationContext)
@@ -62,7 +71,8 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                             "email" to email,
                             "password" to hashedPassword,
                             "role" to "user",
-                            "loginTimestamp" to System.currentTimeMillis()
+                            "loginTimestamp" to System.currentTimeMillis(),
+                            "totalTime" to 0L
                         )
 
                         firestore.collection("users").document(it.uid).set(newUser)
@@ -134,6 +144,45 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 } else {
                     onFailure(task.exception?.message ?: "Échec de connexion avec Google")
                 }
+            }
+    }
+
+    fun fetchUserProfile() {
+        val userId = auth.currentUser?.uid ?: return
+        firestore.collection("users").document(userId)
+            .get()
+            .addOnSuccessListener { doc ->
+                currentUsername.value = doc.getString("username")
+                currentRole.value = doc.getString("role")
+                currentEmail.value = doc.getString("email")
+                _profilePicture.value = doc.getString("profilePicture")
+
+                val loginTimestamp = doc.getLong("loginTimestamp") ?: 0L
+                val now = System.currentTimeMillis()
+                loginTimeInSeconds.value = (now - loginTimestamp) / 1000
+            }
+            .addOnFailureListener {
+                currentUsername.value = null
+                currentRole.value = null
+                currentEmail.value = null
+                loginTimeInSeconds.value = null
+            }
+    }
+
+    fun setProfilePicture(value: String) {
+        _profilePicture.value = value
+    }
+
+    fun updateUserField(field: String, value: Any) {
+        val userId = auth.currentUser?.uid ?: return
+        firestore.collection("users")
+            .document(userId)
+            .update(field, value)
+            .addOnSuccessListener {
+                Log.d("AuthViewModel", "$field updated")
+            }
+            .addOnFailureListener { e ->
+                Log.e("AuthViewModel", "Error updating $field", e)
             }
     }
 }

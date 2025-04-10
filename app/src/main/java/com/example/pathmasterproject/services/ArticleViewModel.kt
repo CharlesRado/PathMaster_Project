@@ -12,9 +12,18 @@ class ArticleViewModel : ViewModel() {
     private val _articles = MutableStateFlow<List<Article>>(emptyList())
     val articles: StateFlow<List<Article>> = _articles
 
+    private val _categories = MutableStateFlow<List<String>>(emptyList())
+    val categories: StateFlow<List<String>> = _categories
+
     fun getArticlesByCategory(category: String) {
         viewModelScope.launch {
             _articles.value = repository.getArticles(category)
+        }
+    }
+
+    fun fetchCategories() {
+        viewModelScope.launch {
+            _categories.value = repository.getCategories()
         }
     }
 }

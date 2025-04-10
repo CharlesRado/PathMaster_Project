@@ -15,4 +15,13 @@ class ArticleRepository {
             emptyList()
         }
     }
+
+    suspend fun getCategories(): List<String> {
+        return try {
+            val snapshot = articlesCollection.get().await()
+            snapshot.documents.mapNotNull { it.getString("category") }.distinct()
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
 }

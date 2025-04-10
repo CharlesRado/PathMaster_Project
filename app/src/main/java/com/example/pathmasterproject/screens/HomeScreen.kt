@@ -28,7 +28,7 @@ fun HomeScreen(
             startDestination = Screen.Links.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(Screen.Profile.route) { ProfileScreen(authViewModel) }
+            composable(Screen.Profile.route) { ProfileScreen(navController, authViewModel) }
             composable(Screen.Links.route) { LinksScreen(navController, articleViewModel) }
             composable(Screen.Charts.route) { ChartsScreen() }
         }
