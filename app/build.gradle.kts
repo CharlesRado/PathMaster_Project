@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.google.signin)
     implementation(libs.bcrypt)
     implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.androidx.espresso.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -74,10 +75,12 @@ dependencies {
     implementation(libs.compose.m3)
 
     /* Vico Charts Library */
-    // Vico Chart Library
     implementation (libs.compose.v165)
     implementation (libs.compose.m3.v165)
     implementation (libs.core)
+
+    /**/
+    implementation (libs.androidx.material.icons.extended)
 
     implementation(libs.coil.compose)
     implementation (libs.gson)

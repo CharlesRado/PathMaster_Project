@@ -50,14 +50,49 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    // Sends a password reset email
+    fun sendPasswordResetEmail(
+        email: String,
+        onSuccess: () -> Unit,
+        onFailure: (String) -> Unit
+    ) {
+        // Use Firebase Auth directly to send a reset email
+        auth.sendPasswordResetEmail(email)
+            .addOnSuccessListener {
+                Log.d("PasswordReset", "Reset email sent successfully to $email")
+                onSuccess()
+            }
+            .addOnFailureListener { e ->
+                Log.e("PasswordReset", "Error sending reset email: ${e.message}")
+
+                val errorMessage = when {
+                    e.message?.contains("no user record corresponding to this identifier") == true ->
+                        "No account found with this email address"
+                    e.message?.contains("badly formatted") == true ->
+                        "Invalid email format"
+                    else -> e.message ?: "Failed to send reset email"
+                }
+
+                onFailure(errorMessage)
+            }
+    }
+
     // Function to configure google sign-in
     private fun configureGoogleSignIn(context: Context) {
         val clientId = context.getString(R.string.client_id)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(clientId)
             .requestEmail()
+            .requestProfile()
             .build()
+
         googleSignInClient = GoogleSignIn.getClient(context, gso)
+
+        // Verify existence of previously logged-in Google Account
+        val lastSignedInAccount = GoogleSignIn.getLastSignedInAccount(context)
+        if (lastSignedInAccount != null) {
+            Log.d("GoogleSignIn", "Found previously signed-in Google account: ${lastSignedInAccount.email}")
+        }
     }
 
     // Function to get google sign-in intent
