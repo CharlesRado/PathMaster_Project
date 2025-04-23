@@ -2,6 +2,10 @@
 agp = "8.7.3"
 bcrypt = "0.9.0"
 coilCompose = "2.4.0"
+compose = "1.12.0"
+composeM3 = "1.6.5"
+composeVersion = "1.6.5"
+gson = "2.10.1"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -20,11 +24,18 @@ googleid = "1.1.1"
 firebaseFirestore = "25.1.2"
 firebaseFunctions = "21.1.1"
 googleSignIn = "21.3.0"
+firebaseCrashlyticsBuildtools = "3.0.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 bcrypt = { module = "at.favre.lib:bcrypt", version.ref = "bcrypt" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+compose = { module = "com.patrykandpatryk.vico:compose", version.ref = "compose" }
+compose-m3 = { module = "com.patrykandpatryk.vico:compose-m3", version.ref = "compose" }
+compose-m3-v165 = { module = "com.patrykandpatryk.vico:compose-m3", version.ref = "composeM3" }
+compose-v165 = { module = "com.patrykandpatryk.vico:compose", version.ref = "composeVersion" }
+core = { module = "com.patrykandpatryk.vico:core", version.ref = "composeM3" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -47,6 +58,7 @@ googleid = { group = "com.google.android.libraries.identity.googleid", name = "g
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 firebase-functions = { group = "com.google.firebase", name = "firebase-functions", version.ref = "firebaseFunctions" }
 google-signin = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "googleSignIn" }
+firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
