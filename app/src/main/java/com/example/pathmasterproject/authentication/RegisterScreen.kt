@@ -3,7 +3,6 @@ package com.example.pathmasterproject.authentication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -28,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import com.example.pathmasterproject.R
 import com.example.pathmasterproject.navigation.Screen
 import com.example.pathmasterproject.services.AuthViewModel
+import androidx.compose.ui.text.TextStyle
 
 @Composable
 fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
@@ -52,7 +52,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // register title
+        // Register title
         Text(
             text = "Sign Up",
             color = Color(0xFF25356C),
@@ -61,7 +61,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // username field
+        // Username field
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
@@ -69,17 +69,20 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
             modifier = Modifier
                 .fillMaxWidth(0.85f)
                 .padding(vertical = 8.dp)
-                .height(48.dp),
+                .height(55.dp),
+            textStyle = TextStyle(fontSize = 16.sp),
             singleLine = true,
             keyboardOptions = KeyboardOptions(autoCorrect = false),
             shape = RoundedCornerShape(24.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedContainerColor = Color.White,
-                focusedContainerColor = Color.White
+                focusedContainerColor = Color.White,
+                unfocusedTextColor = Color(0xFF25356C),
+                focusedTextColor = Color(0xFF25356C)
             )
         )
 
-        // email field
+        // Email field
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
@@ -87,17 +90,20 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
             modifier = Modifier
                 .fillMaxWidth(0.85f)
                 .padding(vertical = 8.dp)
-                .height(48.dp),
+                .height(55.dp),
+            textStyle = TextStyle(fontSize = 16.sp),
             singleLine = true,
             keyboardOptions = KeyboardOptions(autoCorrect = false),
             shape = RoundedCornerShape(24.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedContainerColor = Color.White,
-                focusedContainerColor = Color.White
+                focusedContainerColor = Color.White,
+                unfocusedTextColor = Color(0xFF25356C),
+                focusedTextColor = Color(0xFF25356C)
             )
         )
 
-        // password field
+        // Password field
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
@@ -105,18 +111,21 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
             modifier = Modifier
                 .fillMaxWidth(0.85f)
                 .padding(vertical = 8.dp)
-                .height(48.dp),
+                .height(55.dp),
+            textStyle = TextStyle(fontSize = 16.sp),
             visualTransformation = PasswordVisualTransformation(),
             singleLine = true,
             keyboardOptions = KeyboardOptions(autoCorrect = false),
             shape = RoundedCornerShape(24.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedContainerColor = Color.White,
-                focusedContainerColor = Color.White
+                focusedContainerColor = Color.White,
+                unfocusedTextColor = Color(0xFF25356C),
+                focusedTextColor = Color(0xFF25356C)
             )
         )
 
-        // confirm password field
+        // Confirm password field
         OutlinedTextField(
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
@@ -124,20 +133,23 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
             modifier = Modifier
                 .fillMaxWidth(0.85f)
                 .padding(vertical = 8.dp)
-                .height(48.dp),
+                .height(55.dp),
+            textStyle = TextStyle(fontSize = 16.sp),
             visualTransformation = PasswordVisualTransformation(),
             singleLine = true,
             keyboardOptions = KeyboardOptions(autoCorrect = false),
             shape = RoundedCornerShape(24.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedContainerColor = Color.White,
-                focusedContainerColor = Color.White
+                focusedContainerColor = Color.White,
+                unfocusedTextColor = Color(0xFF25356C),
+                focusedTextColor = Color(0xFF25356C)
             )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // button to confirm registration
+        // Button to confirm registration
         Button(
             onClick = {
             if (password == confirmPassword) {
@@ -156,7 +168,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // google Sign-Up Button
+        // Google Sign-Up Button
         Text(text = "Or sign up with Google", color = Color(0xFF7889CF))
 
         IconButton(
@@ -171,7 +183,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // log-in link
+        // Log-in link
         Text(
             text = "You already have an account? LogIn",
             color = Color(0xFF7889CF),

@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.pathmasterproject.R
+import com.example.pathmasterproject.authentication.ForgotPasswordScreen
 import com.example.pathmasterproject.screens.HomeScreen
 import com.example.pathmasterproject.authentication.LoginScreen
 import com.example.pathmasterproject.authentication.RegisterScreen
@@ -30,6 +31,7 @@ sealed class Screen(val route: String, @DrawableRes val iconResId: Int? = null) 
     data object Favorites : Screen("favorites")
     data object Notifications : Screen("notifications")
     data object Settings : Screen("settings")
+    data object ForgotPassword : Screen("forgot_password")
 }
 
 @Composable
@@ -52,7 +54,8 @@ fun AppNavigation(
         composable(Screen.Favorites.route) { FavoritesScreen(navController, articleViewModel) }
         composable(Screen.Notifications.route) { NotificationScreen(navController,notificationsViewModel) }
         composable(Screen.Settings.route) { SettingsScreen() }
-
-
+        composable(Screen.ForgotPassword.route) {
+            ForgotPasswordScreen(navController, authViewModel)
+        }
     }
 }
