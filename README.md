@@ -58,7 +58,7 @@ This Python script scrapes data from four academic sources, structures it, and f
 
 ---
 
-## 🧑‍🤝‍🧑 Team & Contributions
+## Team & Contributions
 
 |  Project Component  |                                 Description                                  |  CR  |  EB  |  MG  |  KP  |
 |---------------------|------------------------------------------------------------------------------|------|------|------|------|
