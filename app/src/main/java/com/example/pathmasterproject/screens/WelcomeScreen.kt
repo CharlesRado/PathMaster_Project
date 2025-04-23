@@ -39,8 +39,8 @@ fun WelcomeScreen(navController: NavController) {
             Button(
                 onClick = { navController.navigate(Screen.Login.route) },
                 modifier = Modifier
-                    .width(200.dp) // Ajuste la largeur du bouton
-                    .height(50.dp), // Ajuste la hauteur du bouton
+                    .width(200.dp)
+                    .height(50.dp),
                 colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF25356C)
                 ),

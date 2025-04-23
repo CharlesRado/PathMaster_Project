@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.firebase.functions)
     implementation(libs.google.signin)
     implementation(libs.bcrypt)
+    implementation(libs.firebase.crashlytics.buildtools)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -69,7 +70,17 @@ dependencies {
 
     /* Jetpack Compose Dependencies */
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.compose)
+    implementation(libs.compose.m3)
+
+    /* Vico Charts Library */
+    // Vico Chart Library
+    implementation (libs.compose.v165)
+    implementation (libs.compose.m3.v165)
+    implementation (libs.core)
 
     implementation(libs.coil.compose)
+    implementation (libs.gson)
+
 
 }

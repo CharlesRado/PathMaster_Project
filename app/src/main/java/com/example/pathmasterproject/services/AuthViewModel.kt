@@ -4,11 +4,8 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.example.pathmasterproject.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -16,18 +13,24 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import kotlinx.coroutines.launch
 import at.favre.lib.crypto.bcrypt.BCrypt
-import com.example.pathmasterproject.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private lateinit var googleSignInClient: GoogleSignInClient
     private val _profilePicture = MutableStateFlow<String?>(null)
+    private val _favoritesCount = MutableStateFlow<Int>(0)
+    val favoritesCount = _favoritesCount.asStateFlow()
+
+    // Add this property to track connection status
+    private val _isLoggedIn = MutableStateFlow(auth.currentUser != null)
+    val isLoggedIn: StateFlow<Boolean> = _isLoggedIn
 
     val currentUsername = MutableStateFlow<String?>(null)
     val currentRole = MutableStateFlow<String?>(null)
@@ -37,9 +40,17 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         configureGoogleSignIn(application.applicationContext)
+
+        // Add a listener to detect changes in authentication status
+        auth.addAuthStateListener { firebaseAuth ->
+            _isLoggedIn.value = firebaseAuth.currentUser != null
+            if (firebaseAuth.currentUser != null) {
+                fetchUserProfile()
+            }
+        }
     }
 
-    // function to configure google sign-in
+    // Function to configure google sign-in
     private fun configureGoogleSignIn(context: Context) {
         val clientId = context.getString(R.string.client_id)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -49,12 +60,12 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         googleSignInClient = GoogleSignIn.getClient(context, gso)
     }
 
-    // function to get google sign-in intent
+    // Function to get google sign-in intent
     fun getGoogleSignInIntent(): Intent {
         return googleSignInClient.signInIntent
     }
 
-    // function to handle email/password sign-up and firestore
+    // Function to handle email/password sign-up and firestore
     fun signUpWithEmail(
         email: String, password: String, username: String,
         onSuccess: () -> Unit, onFailure: (String) -> Unit
@@ -77,15 +88,15 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
                         firestore.collection("users").document(it.uid).set(newUser)
                             .addOnSuccessListener { onSuccess() }
-                            .addOnFailureListener { e -> onFailure("Erreur Firestore: ${e.message}") }
+                            .addOnFailureListener { e -> onFailure("Firestore error: ${e.message}") }
                     }
                 } else {
-                    onFailure(task.exception?.message ?: "Échec de l'inscription")
+                    onFailure(task.exception?.message ?: "Registration failure")
                 }
             }
     }
 
-    // function to handle email/password log-in and firestore
+    // Function to handle email/password log-in and firestore
     fun signInWithEmail(
         email: String, password: String,
         onSuccess: (Map<String, Any>?) -> Unit, onFailure: (String) -> Unit
@@ -100,18 +111,18 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                                 if (document.exists()) {
                                     onSuccess(document.data)
                                 } else {
-                                    onFailure("Utilisateur introuvable dans Firestore")
+                                    onFailure("User not found in Firestore")
                                 }
                             }
-                            .addOnFailureListener { e -> onFailure("Erreur Firestore: ${e.message}") }
+                            .addOnFailureListener { e -> onFailure("Connection failure: ${e.message}") }
                     }
                 } else {
-                    onFailure(task.exception?.message ?: "Échec de connexion")
+                    onFailure(task.exception?.message ?: "Connection failure")
                 }
             }
     }
 
-    // function to handle google log-in
+    // Function to handle google log-in
     fun signInWithGoogle(idToken: String, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
@@ -134,15 +145,15 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                                     )
                                     firestore.collection("users").document(userId).set(newUser)
                                         .addOnSuccessListener { onSuccess() }
-                                        .addOnFailureListener { e -> onFailure("Erreur Firestore: ${e.message}") }
+                                        .addOnFailureListener { e -> onFailure("Firestore error: ${e.message}") }
                                 } else {
                                     onSuccess()
                                 }
                             }
-                            .addOnFailureListener { e -> onFailure("Erreur Firestore: ${e.message}") }
+                            .addOnFailureListener { e -> onFailure("Firestore error: ${e.message}") }
                     }
                 } else {
-                    onFailure(task.exception?.message ?: "Échec de connexion avec Google")
+                    onFailure(task.exception?.message ?: "Connection failure with Google")
                 }
             }
     }
@@ -160,6 +171,11 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 val loginTimestamp = doc.getLong("loginTimestamp") ?: 0L
                 val now = System.currentTimeMillis()
                 loginTimeInSeconds.value = (now - loginTimestamp) / 1000
+
+                // Check whether the favorites counter exists and create it if necessary
+                if (!doc.contains("favorites_count")) {
+                    updateUserField("favorites_count", 0L)
+                }
             }
             .addOnFailureListener {
                 currentUsername.value = null
@@ -183,6 +199,42 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
             }
             .addOnFailureListener { e ->
                 Log.e("AuthViewModel", "Error updating $field", e)
+            }
+    }
+
+    fun signOut(onComplete: () -> Unit) {
+        viewModelScope.launch {
+            try {
+                // Disconnect from Firebase
+                auth.signOut()
+
+                // Disconnect from Google if necessary
+                try {
+                    googleSignInClient.signOut().await()
+                } catch (e: Exception) {
+                    Log.e("AuthViewModel", "Error signing out from Google", e)
+                }
+
+                // The authentication status listener will automatically update _isLoggedIn
+                onComplete()
+            } catch (e: Exception) {
+                Log.e("AuthViewModel", "Error during signOut", e)
+                onComplete()
+            }
+        }
+    }
+
+    fun fetchFavoritesCount() {
+        val userId = auth.currentUser?.uid ?: return
+
+        firestore.collection("users")
+            .document(userId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val count = document.getLong("favorites_count")?.toInt() ?: 0
+                    _favoritesCount.value = count
+                }
             }
     }
 }

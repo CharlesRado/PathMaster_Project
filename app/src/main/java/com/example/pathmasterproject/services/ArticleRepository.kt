@@ -5,7 +5,7 @@ import kotlinx.coroutines.tasks.await
 
 class ArticleRepository {
     private val firestore = FirebaseFirestore.getInstance()
-    private val articlesCollection = firestore.collection("articles")
+    private val articlesCollection = firestore.collection("retrieved_articles")
 
     suspend fun getArticles(category: String): List<Article> {
         return try {

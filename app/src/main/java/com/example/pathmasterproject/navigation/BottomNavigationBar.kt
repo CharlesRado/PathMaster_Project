@@ -1,10 +1,6 @@
 package com.example.pathmasterproject.navigation
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -30,19 +26,13 @@ fun BottomNavigationBar(navController: NavController) {
             val selected = screen.route == currentRoute
             NavigationBarItem(
                 icon = {
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxHeight()
-                            .padding(vertical = 2.dp)
-                    ) {
-                        screen.iconResId?.let {
-                            Image(
-                                painter = painterResource(id = it),
-                                contentDescription = screen.route,
-                                modifier = Modifier.size(if (selected) 48.dp else 46.dp)
-                            )
-                        }
+                    screen.iconResId?.let {
+                        Icon(
+                            painter = painterResource(id = it),
+                            contentDescription = screen.route,
+                            modifier = Modifier.size(30.dp),
+                            tint = if (selected) Color.White else Color(0xFFE0E0E0)
+                        )
                     }
                 },
                 selected = selected,
